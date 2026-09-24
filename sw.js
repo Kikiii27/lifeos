@@ -1,6 +1,6 @@
 // Offline shell for LifeOS. Pages are network-first so a new deploy is picked up on the next
 // open; hashed build assets never change, so they are served from cache once stored.
-const CACHE = 'lifeos-shell-v7'
+const CACHE = 'lifeos-shell-v8'
 // The folder the app lives in: `/` normally, `/lifeos-web/` on GitHub Pages.
 const BASE = new URL(self.registration.scope).pathname
 const SHELL = BASE
