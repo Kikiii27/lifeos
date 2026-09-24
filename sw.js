@@ -1,6 +1,6 @@
 // Offline shell for LifeOS. Pages are network-first so a new deploy is picked up on the next
 // open; hashed build assets never change, so they are served from cache once stored.
-const CACHE = 'lifeos-shell-v8'
+const CACHE = 'lifeos-shell-v9'
 // The folder the app lives in: `/` normally, `/lifeos-web/` on GitHub Pages.
 const BASE = new URL(self.registration.scope).pathname
 const SHELL = BASE
@@ -69,6 +69,24 @@ self.addEventListener('fetch', (event) => {
       )
     )
   }
+})
+
+self.addEventListener('push', (event) => {
+  let data = {}
+  try {
+    data = event.data ? event.data.json() : {}
+  } catch {
+    data = { title: 'LifeOS', body: event.data ? event.data.text() : '' }
+  }
+  event.waitUntil(
+    self.registration.showNotification(data.title || 'LifeOS', {
+      body: data.body || '',
+      icon: `${BASE}apple-touch-icon.png`,
+      badge: `${BASE}apple-touch-icon.png`,
+      tag: data.tag,
+      data: { url: `${BASE}${data.url || '#today'}` }
+    })
+  )
 })
 
 self.addEventListener('notificationclick', (event) => {
